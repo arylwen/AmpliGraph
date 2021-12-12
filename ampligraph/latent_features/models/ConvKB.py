@@ -6,7 +6,8 @@
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import logging
 
 from .EmbeddingModel import EmbeddingModel, register_model, ENTITY_THRESHOLD

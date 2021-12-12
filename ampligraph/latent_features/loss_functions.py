@@ -5,7 +5,8 @@
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import abc
 import logging
 

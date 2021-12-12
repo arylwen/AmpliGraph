@@ -14,7 +14,7 @@ import warnings
 import pandas as pd
 import numpy as np
 from tqdm import tqdm
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 from ..evaluation import mrr_score, hits_at_n_score, mr_score
 from ..datasets import AmpligraphDatasetAdapter, NumpyDatasetAdapter, OneToNDatasetAdapter

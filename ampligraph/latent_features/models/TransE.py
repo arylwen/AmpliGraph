@@ -8,8 +8,8 @@
 from .EmbeddingModel import EmbeddingModel, register_model
 from ampligraph.latent_features import constants as constants
 from ampligraph.latent_features.initializers import DEFAULT_XAVIER_IS_UNIFORM
-import tensorflow as tf
-
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
 @register_model("TransE",
                 ["norm", "normalize_ent_emb", "negative_corruption_entities"])

@@ -6,7 +6,9 @@
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 import numpy as np
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.compat.v1.disable_v2_behavior()
 from sklearn.utils import check_random_state
 import abc
 from tqdm import tqdm
@@ -585,7 +587,7 @@ class EmbeddingModel(abc.ABC):
             dependencies.append(init_ent_emb_batch)
 
             # create a lookup dependency(to remap the entity indices to the corresponding indices of variables in memory
-            self.sparse_mappings = tf.contrib.lookup.MutableDenseHashTable(key_dtype=tf.int32, value_dtype=tf.int32,
+            self.sparse_mappings = tf.lookup.experimental.DenseHashTable(key_dtype=tf.int32, value_dtype=tf.int32,
                                                                            default_value=-1, empty_key=-2,
                                                                            deleted_key=-1)
 
@@ -1344,7 +1346,7 @@ class EmbeddingModel(abc.ABC):
             test_dependency.append(init_ent_emb_batch)
 
             # Add a dependency to create lookup tables(for remapping the entity indices to the order of variables on GPU
-            self.sparse_mappings = tf.contrib.lookup.MutableDenseHashTable(key_dtype=tf.int32,
+            self.sparse_mappings = tf.lookup.experimental.DenseHashTable(key_dtype=tf.int32,
                                                                            value_dtype=tf.int32,
                                                                            default_value=-1,
                                                                            empty_key=-2,
@@ -1358,7 +1360,7 @@ class EmbeddingModel(abc.ABC):
                 # Since the number of entities are low when entities_subset is used, the size of the array
                 # which stores the scores would be len(entities_subset). 
                 # Hence while storing, the corruption entity id needs to be mapped to array index
-                rankings_mappings = tf.contrib.lookup.MutableDenseHashTable(key_dtype=tf.int32,
+                rankings_mappings = tf.lookup.experimental.DenseHashTable(key_dtype=tf.int32,
                                                                             value_dtype=tf.int32,
                                                                             default_value=-1,
                                                                             empty_key=-2,
@@ -1537,11 +1539,14 @@ class EmbeddingModel(abc.ABC):
                 if corruption_entities.ndim == 1:
                     corruption_entities = np.expand_dims(corruption_entities, 1)
                 # If the specified key is not present then it would return the length of corruption_entities
-                corruption_mapping = tf.contrib.lookup.MutableDenseHashTable(key_dtype=tf.int32,
+                #corruption_mapping = tf.compat.v1.raw_ops.MutableDenseHashTable(
+                corruption_mapping = tf.lookup.experimental.DenseHashTable(
+                                                                             key_dtype=tf.int32,
                                                                              value_dtype=tf.int32,
                                                                              default_value=len(corruption_entities),
                                                                              empty_key=-2,
-                                                                             deleted_key=-1)
+                                                                             deleted_key=-1
+                                                                            )
 
                 insert_lookup_op = corruption_mapping.insert(corruption_entities,
                                                              tf.reshape(tf.range(tf.shape(corruption_entities)[0],

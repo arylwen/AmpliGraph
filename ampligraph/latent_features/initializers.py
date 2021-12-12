@@ -5,7 +5,8 @@
 #
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
-import tensorflow as tf
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
 import abc
 import logging
 import numpy as np
@@ -425,8 +426,9 @@ class Xavier(Initializer):
         -------
         initializer_instance: An Initializer instance.
         """
-        return tf.contrib.layers.xavier_initializer(uniform=self._initializer_params['uniform'],
-                                                    dtype=tf.float32)
+        #return tf.contrib.layers.xavier_initializer(uniform=self._initializer_params['uniform'],
+        #                                            dtype=tf.float32)
+        return tf.compat.v1.keras.initializers.glorot_normal(dtype=tf.float32)
 
     def _get_np_initializer(self, in_shape, out_shape, concept='e'):
         """Create an initialized numpy array

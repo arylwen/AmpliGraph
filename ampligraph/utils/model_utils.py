@@ -12,8 +12,10 @@ from time import gmtime, strftime
 import glob
 import logging
 
-import tensorflow as tf
-from tensorflow.contrib.tensorboard.plugins import projector
+#import tensorflow as tf
+import tensorflow.compat.v1 as tf
+#from tensorflow.contrib.tensorboard.plugins import projector
+from tensorboard.plugins import projector
 import numpy as np
 import pandas as pd
 
